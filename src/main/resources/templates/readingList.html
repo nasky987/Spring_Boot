@@ -14,7 +14,7 @@
     <div th:unless="${#lists.isEmpty(books)}">
         <dl th:each="book : ${books}">
             <dt class="bookHeadline">
-                <a th:href="'http://www.amazon.com/gp/product/' + ${book.isbn} + '/tag=제휴ID'"
+                <a th:href="'http://www.amazon.com/gp/product/' + ${book.isbn} + '/tag=' + ${amazonID}"
                    th:text="${book.title}">
                     Title
                 </a>
