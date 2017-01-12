@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Oops!</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"></link>
+</head>
+<body>
+    <p class="errorPage">
+        <span class="oops">Oops!</span> <br />
+        <img th:src="@{images/MissingPage.png}"></img>
+        <p>
+            There seems to be a problem with the page you requested(<span th:text="${path}"></span>).
+        </p>
+        <p th:text="${'Detailes: ' + message}"</p>
+    </div>
+</body>
+</html>
