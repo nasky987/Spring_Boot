@@ -16,6 +16,7 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 /**
  * Created by hreeman on 1/12/17.
@@ -33,6 +34,7 @@ public class MockMvcWebTests {
     public void setupMockMvc() {
         mockMvc = MockMvcBuilders
                     .webAppContextSetup(webApplicationContext)
+                    .apply(springSecurity())
                     .build();
     }
 
