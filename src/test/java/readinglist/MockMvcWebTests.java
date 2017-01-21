@@ -78,4 +78,11 @@ public class MockMvcWebTests {
                 .andExpect(model().attribute("books", hasSize(1)))
                 .andExpect(model().attribute("books", contains(samePropertyValuesAs(expectedBook))));
     }
+
+    @Test
+    public void homePage_unauthenticatedUser() throws Exception {
+        mockMvc.perform(get("/"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(header().string("Location", "http://localhost/login"));
+    }
 }
