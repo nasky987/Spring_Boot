@@ -39,9 +39,13 @@ public class ServerWebTests {
 
     @Test
     public void addBookToEmptyList() {
-        String baseUrl = "http://localhost:" + port;
+        String baseUrl = "https://localhost:" + port;
 
         safariBrowser.get(baseUrl); //메인페이지 조회
+
+        safariBrowser.findElementByName("username").sendKeys("hreeman");
+        safariBrowser.findElementByName("password").sendKeys("1234");
+        safariBrowser.findElementByTagName("form").submit();
 
         assertEquals("You have no books in your book list", safariBrowser.findElementByCssSelector("div > p").getText()); //빈 책 여부 검증(해당 문구 있는지 검사)
 
@@ -49,10 +53,10 @@ public class ServerWebTests {
         safariBrowser.findElementByName("author").sendKeys("BOOK AUTHOR");
         safariBrowser.findElementByName("isbn").sendKeys("1234567890");
         safariBrowser.findElementByName("description").sendKeys("DESCRIPTION");
-        safariBrowser.findElementByTagName("form").submit(); //폼에 데이터를 추가하고 전송
+        safariBrowser.findElementByName("f").submit(); //폼에 데이터를 추가하고 전송
 
-        WebElement dl = safariBrowser.findElementByCssSelector("dt.bookHeadLine");
-        assertEquals("BOOK TITLE by BOOK AUTHOR (ISBN: 1234567890", dl.getText());
+        WebElement dl = safariBrowser.findElementByCssSelector("dt.bookHeadline");
+        assertEquals("BOOK TITLE by BOOK AUTHOR (ISBN: 1234567890)", dl.getText());
 
         WebElement dt = safariBrowser.findElementByCssSelector("dd.bookDescription");
         assertEquals("DESCRIPTION", dt.getText()); //목록에 새 책이 추가되었는지 검증
