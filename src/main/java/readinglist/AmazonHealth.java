@@ -20,7 +20,7 @@ public class AmazonHealth implements HealthIndicator {
 
             return health().up().build();
         } catch (Exception e) {
-            return health().down().build();
+            return health().down().withDetail("reason", e.getMessage()).build();
         }
     }
 }
