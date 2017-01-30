@@ -1,6 +1,8 @@
 package readinglist;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.metrics.CounterService;
+import org.springframework.boot.actuate.metrics.GaugeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +19,16 @@ import java.util.List;
 public class ReadingListController {
     private ReadingListRepository readingListRepository;
     private AmazonProperties amazonProperties;
+    private CounterService counterService;
+    private GaugeService gaugeService;
 
     @Autowired
-    public ReadingListController(ReadingListRepository readingListRepository, AmazonProperties amazonProperties) {
+    public ReadingListController(ReadingListRepository readingListRepository, AmazonProperties amazonProperties,
+                                 CounterService counterService, GaugeService gaugeService) {
         this.readingListRepository = readingListRepository;
         this.amazonProperties = amazonProperties;
+        this.counterService = counterService;
+        this.gaugeService = gaugeService;
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -41,6 +48,9 @@ public class ReadingListController {
     public String addToReadingList(Reader reader, Book book) {
         book.setReader(reader);
         readingListRepository.save(book);
+
+        counterService.increment("books.saved"); //book.saved 메트릭 증가
+        gaugeService.submit("books.last.saved", System.currentTimeMillis()); //book.last.saved 기록
 
         return "redirect:/";
     }
