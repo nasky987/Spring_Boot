@@ -10,11 +10,12 @@ buildscript {
 	}
 }
 
+apply plugin: 'war'
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 
-jar {
+war {
 	baseName = 'readingList'
 	version = '0.0.1-SNAPSHOT'
 }
