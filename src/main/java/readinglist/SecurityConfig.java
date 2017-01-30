@@ -28,6 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http
             .authorizeRequests()
                 .antMatchers("/").access("hasRole('READER')") //READER 권한 필요
+                .antMatchers("/shutdown").access("hasRole('ADMIN')")
                 .antMatchers("/**").permitAll()
             .and()
 
@@ -38,7 +39,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService());
+        auth.userDetailsService(userDetailsService())
+            .and()
+            .inMemoryAuthentication()
+                .withUser("admin").password("admin")
+                .roles("ADMIN", "READER");
     }
 
     @Bean
@@ -46,7 +51,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                return readerRepository.findOne(username);
+                UserDetails user = readerRepository.findOne(username);
+
+                if (user != null) {
+                    return user;
+                }
+
+                throw new UsernameNotFoundException("User '" + username + "' not found.");
             }
         };
     }
